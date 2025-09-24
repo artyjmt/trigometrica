@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadoras Matemáticas Reales</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      color: #222;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0057b8;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+    }
+
+    .section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    label, input {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    /* --- Botones generales --- */
+    button {
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0d6efd;
+      transform: scale(1.05);
+    }
+
+    .resultado {
+      margin-top: 10px;
+      padding: 10px;
+      background: #eef3f8;
+      border-left: 4px solid #007acc;
+      border-radius: 4px;
+    }
+
+    .formula-box {
+      background: #f9f9f9;
+      border-left: 4px solid #007acc;
+      padding: 10px 15px;
+      margin: 10px 0;
+      font-family: monospace;
+    }
+
+    /* --- Caja calculadora --- */
+    .calc-box {
+      margin-top: 15px;
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    /* --- Botones de mini-calculadora --- */
+    .calc-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .calc-buttons button {
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .calc-buttons button:hover {
+      background-color: #0d6efd;
+      transform: scale(1.05);
+    }
+
+    /* Botón limpiar */
+    .calc-buttons button.clear {
+      background-color: #ff4d4d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculadoras y Referencias Matemáticas</h1>
+  <div class="container">
+    <!-- DERIVADAS -->
+    <div class="section">
+      <h2>📐 Derivadas</h2>
+      <label for="derivada">Función (ej: x^2 + sin(x)):</label>
+      <input type="text" id="derivada" placeholder="Ejemplo: x^2 + sin(x)">
+      <button onclick="calcularDerivada()">Calcular Derivada</button>
+      <div class="resultado" id="resultado-derivada"></div>
+      <div class="formula-box">
+        Derivada de x<sup>n</sup> = n·x<sup>n-1</sup><br>
+        Derivada de sin(x) = cos(x), ln(x) = 1/x, etc.
+      </div>
+
+      <!-- Botones calculadora -->
+      <div class="calc-box">
+        <div class="calc-buttons">
+          <button onclick="appendCalc('7','derivada')">7</button>
+          <button onclick="appendCalc('8','derivada')">8</button>
+          <button onclick="appendCalc('9','derivada')">9</button>
+          <button onclick="appendCalc('/','derivada')">÷</button>
+          <button class="clear" onclick="clearCalc('derivada')">C</button>
+          <button onclick="appendCalc('4','derivada')">4</button>
+          <button onclick="appendCalc('5','derivada')">5</button>
+          <button onclick="appendCalc('6','derivada')">6</button>
+          <button onclick="appendCalc('*','derivada')">×</button>
+          <button onclick="appendCalc('^','derivada')">xʸ</button>
+          <button onclick="appendCalc('1','derivada')">1</button>
+          <button onclick="appendCalc('2','derivada')">2</button>
+          <button onclick="appendCalc('3','derivada')">3</button>
+          <button onclick="appendCalc('-','derivada')">−</button>
+          <button onclick="appendCalc('sqrt(','derivada')">√</button>
+          <button onclick="appendCalc('0','derivada')">0</button>
+          <button onclick="appendCalc('.','derivada')">.</button>
+          <button onclick="appendCalc('+','derivada')">+</button>
+          <button onclick="appendCalc('(','derivada')">(</button>
+          <button onclick="appendCalc(')','derivada')">)</button>
+          <button onclick="appendCalc('sin(','derivada')">sin</button>
+          <button onclick="appendCalc('cos(','derivada')">cos</button>
+          <button onclick="appendCalc('tan(','derivada')">tan</button>
+          <button onclick="appendCalc('log(','derivada')">log</button>
+          <button onclick="appendCalc('pi','derivada')">π</button>
+          <button onclick="appendCalc('exp(','derivada')">exp</button>
+          <button onclick="appendCalc('ln(','derivada')">ln</button>
+          <button onclick="appendCalc('e','derivada')">e</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ECUACIONES -->
+    <div class="section">
+      <h2>🧮 Ecuaciones</h2>
+      <label for="ecuacion">Ecuación (ej: 2x + 3 = 9):</label>
+      <input type="text" id="ecuacion" placeholder="Ejemplo: x^2 - 4 = 0">
+      <button onclick="resolverEcuacion()">Resolver Ecuación</button>
+      <div class="resultado" id="resultado-ecuacion"></div>
+      <div class="formula-box">x = [-b ± √(b² - 4ac)] / 2a</div>
+
+      <!-- Botones calculadora -->
+      <div class="calc-box">
+        <div class="calc-buttons">
+          <button onclick="appendCalc('7','ecuacion')">7</button>
+          <button onclick="appendCalc('8','ecuacion')">8</button>
+          <button onclick="appendCalc('9','ecuacion')">9</button>
+          <button onclick="appendCalc('/','ecuacion')">÷</button>
+          <button class="clear" onclick="clearCalc('ecuacion')">C</button>
+          <button onclick="appendCalc('4','ecuacion')">4</button>
+          <button onclick="appendCalc('5','ecuacion')">5</button>
+          <button onclick="appendCalc('6','ecuacion')">6</button>
+          <button onclick="appendCalc('*','ecuacion')">×</button>
+          <button onclick="appendCalc('1','ecuacion')">1</button>
+          <button onclick="appendCalc('2','ecuacion')">2</button>
+          <button onclick="appendCalc('3','ecuacion')">3</button>
+          <button onclick="appendCalc('-','ecuacion')">−</button>
+          <button onclick="appendCalc('0','ecuacion')">0</button>
+          <button onclick="appendCalc('.','ecuacion')">.</button>
+          <button onclick="appendCalc('+','ecuacion')">+</button>
+          <button onclick="appendCalc('(','ecuacion')">(</button>
+          <button onclick="appendCalc(')','ecuacion')">)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRIGONOMETRÍA -->
+    <div class="section">
+      <h2>📈 Funciones Trigonométricas</h2>
+      <label for="trigo">Expresión (ej: cos(pi/3) + tan(pi/4)):</label>
+      <input type="text" id="trigo" placeholder="Ejemplo: sin(pi/2) + cos(0)">
+      <button onclick="evaluarTrigonometria()">Calcular Resultado</button>
+      <div class="resultado" id="resultado-trigo"></div>
+      <div class="formula-box">
+        sin²(x) + cos²(x) = 1<br>
+        1 + tan²(x) = sec²(x)<br>
+        Evaluaciones como sin(pi/2) = 1
+      </div>
+
+      <!-- Botones calculadora -->
+      <div class="calc-box">
+        <div class="calc-buttons">
+          <button onclick="appendCalc('7','trigo')">7</button>
+          <button onclick="appendCalc('8','trigo')">8</button>
+          <button onclick="appendCalc('9','trigo')">9</button>
+          <button onclick="appendCalc('/','trigo')">÷</button>
+          <button class="clear" onclick="clearCalc('trigo')">C</button>
+          <button onclick="appendCalc('4','trigo')">4</button>
+          <button onclick="appendCalc('5','trigo')">5</button>
+          <button onclick="appendCalc('6','trigo')">6</button>
+          <button onclick="appendCalc('*','trigo')">×</button>
+          <button onclick="appendCalc('1','trigo')">1</button>
+          <button onclick="appendCalc('2','trigo')">2</button>
+          <button onclick="appendCalc('3','trigo')">3</button>
+          <button onclick="appendCalc('-','trigo')">−</button>
+          <button onclick="appendCalc('0','trigo')">0</button>
+          <button onclick="appendCalc('.','trigo')">.</button>
+          <button onclick="appendCalc('+','trigo')">+</button>
+          <button onclick="appendCalc('(','trigo')">(</button>
+          <button onclick="appendCalc(')','trigo')">)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Derivadas
+    function calcularDerivada() {
+      const input = document.getElementById("derivada").value;
+      try {
+        const derivada = math.derivative(input, 'x').toString();
+        document.getElementById("resultado-derivada").innerText = "Derivada: " + derivada;
+      } catch (error) {
+        document.getElementById("resultado-derivada").innerText = "⚠️ Error en la expresión.";
+      }
+    }
+
+    // Ecuaciones
+    function resolverEcuacion() {
+      const ecuacion = document.getElementById("ecuacion").value;
+      try {
+        const expr = math.parse(ecuacion.replace("=", "-(") + ")");
+        const soluciones = math.solve(expr, 'x');
+        document.getElementById("resultado-ecuacion").innerText = "Solución: x = " + soluciones;
+      } catch (error) {
+        document.getElementById("resultado-ecuacion").innerText = "⚠️ Error resolviendo la ecuación.";
+      }
+    }
+
+    // Trigonometría
+    function evaluarTrigonometria() {
+      const expresion = document.getElementById("trigo").value;
+      try {
+        const resultado = math.evaluate(expresion);
+        document.getElementById("resultado-trigo").innerText = "Resultado: " + resultado;
+      } catch (error) {
+        document.getElementById("resultado-trigo").innerText = "⚠️ Error en la expresión trigonométrica.";
+      }
+    }
+
+    // Funciones calculadora
+    function appendCalc(value, id) {
+      document.getElementById(id).value += value;
+    }
+
+    function clearCalc(id) {
+      document.getElementById(id).value = '';
+    }
+  </script>
+</body>
+</html>
